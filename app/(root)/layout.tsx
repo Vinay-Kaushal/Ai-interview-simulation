@@ -1,8 +1,23 @@
 import React, { ReactNode } from 'react'
+import Image from 'next/image';
+import Link from 'next/link';
+import { isAuthenticated } from '@/lib/actions/auth.action';
+import { redirect } from 'next/navigation';
 
-export  const RootLayout = ({children} : {children : ReactNode}) => {
+export  const RootLayout = async ({children} : {children : ReactNode}) => {
+   const isUserAuthenticated = await isAuthenticated()
+     console.log(isUserAuthenticated)
+   if(!isUserAuthenticated) redirect ('/sign-in')
   return (
-    <div>{children}</div>
+    <div className="root-layout" >
+      <nav>
+        <Link href= "/" className= "flex items-center gap-2">  
+               <Image src = "/logo.svg" alt='Logo' width={38} height={20} /> 
+               <h2  className ="text-primary-100 ">prepXdev</h2>
+          </Link>
+      </nav>
+      {children}
+    </div>
   )
 };
 
